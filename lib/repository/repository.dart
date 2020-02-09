@@ -1,9 +1,11 @@
 import 'package:meta/meta.dart';
-import 'package:search_example/models/query_response.dart';
+
+import 'query_response.dart';
+
+/// The number of results per page.
+final int kPageSize = 20;
 
 abstract class Repository {
-  static final int pageSize = 20;
-  
   Future<QueryResponse> getSearchResults({
     @required String query,
     @required int page,

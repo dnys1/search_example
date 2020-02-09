@@ -4,17 +4,17 @@ abstract class SearchQueueEvent extends Equatable {
   const SearchQueueEvent();
 }
 
-class AddToSearchQueue extends SearchQueueEvent {
+class SearchQueuePageRequested extends SearchQueueEvent {
   final SearchEvent event;
 
-  const AddToSearchQueue(this.event);
+  const SearchQueuePageRequested(this.event);
 
   @override
   List<Object> get props => [event];
 
   @override
   String toString() {
-    return 'AddToSearchQueue { event: $event }';
+    return 'SearchQueuePageRequested { event: $event }';
   }
 }
 

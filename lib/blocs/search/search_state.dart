@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+part of 'search_bloc.dart';
 
 abstract class SearchState extends Equatable {
   const SearchState();
@@ -49,7 +48,7 @@ class SearchSuccess extends SearchState {
 }
 
 class SearchPageLoadInProgress extends SearchSuccess {
-  SearchPageLoadInProgress.fromState(SearchSuccess state, int page)
+  SearchPageLoadInProgress.fromStateAndPage(SearchSuccess state, int page)
       : super(
           results: state.results,
           numPages: state.numPages,

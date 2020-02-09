@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:search_example/models/query_response.dart';
 import 'package:search_example/repository/repository.dart';
+
+import 'query_response.dart';
 
 class ExampleRepository implements Repository {
   @override
@@ -14,6 +15,7 @@ class ExampleRepository implements Repository {
 
     print('Loading page $page');
 
+    // @begin mock_server_code
     // Wait for the "server response"
     await Future.delayed(const Duration(seconds: 1));
 
@@ -22,18 +24,28 @@ class ExampleRepository implements Repository {
     final serverResponse = {
       'numResults': 100,
       'numPages': 5,
-      // Generate sequential results, just for demo purposes.
-      'hits': List<String>.generate(Repository.pageSize,
-          (index) => '${index + Repository.pageSize * page + 1}'),
+      // Generate sequential results for demo purposes.
+      'hits': List<String>.generate(
+        kPageSize,
+        (index) => '${index + kPageSize * page + 1}',
+      ),
     };
+    // @end mock_server_code
 
     final int numResults = serverResponse['numResults'];
     final int numPages = serverResponse['numPages'];
     final List<String> hits = serverResponse['hits'];
 
-    // This is our first call to the server.
-    // In later calls, we will pass the results
-    // list and add to it.
+    // If this is our first call to the server,
+    // `results` will be null. In later calls, we 
+    // will pass the results list and add to it.
+    // This allows us to maintain a fixed-length list
+    // which serves multiple purposes, primarily
+    // so that our GridView will not be updating its
+    // length ever and we can insert objects at their
+    // correct location in the list, allowing for loading
+    // pages out of order, which may happen if a page
+    // request finishes before the previous.
     if (results == null) {
       assert(page == 0);
 
@@ -45,7 +57,7 @@ class ExampleRepository implements Repository {
     // Instead of appending to the list, insert at the
     // correct offset. This allows loading pages out of
     // order.
-    int startIndex = page * Repository.pageSize;
+    int startIndex = page * kPageSize;
     int currIndex = startIndex;
     for (String hit in hits) {
       results[currIndex] = hit;
